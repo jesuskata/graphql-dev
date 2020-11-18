@@ -1,0 +1,88 @@
+{
+  "name": "am-graphql-bootcamp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "nodemon src/index.js --exec babel-node",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint --ext .jsx,.js src"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "graphql-yoga": "^1.18.3"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.1.0",
+    "babel-preset-airbnb": "^5.0.0",
+    "eslint": "^7.13.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-react": "^7.21.5",
+    "husky": "^4.3.0",
+    "nodemon": "^2.0.6"
+  },
+  "husky": {
+    "hooks": {
+      "post-merge": "npm install",
+      "post-rewrite": "npm install",
+      "pre-commit": "npm run lint"
+    }
+  },
+  "eslintConfig": {
+    "parser": "babel-eslint",
+    "env": {
+      "browser": true,
+      "es6": true
+    },
+    "extends": [
+      "airbnb"
+    ],
+    "globals": {
+      "Atomics": "readonly",
+      "SharedArrayBuffer": "readonly",
+      "document": "writable"
+    },
+    "parserOptions": {
+      "ecmaFeatures": {
+        "jsx": true
+      },
+      "ecmaVersion": 2018,
+      "sourceType": "module"
+    },
+    "plugins": [
+      "react"
+    ],
+    "rules": {
+      "no-nested-ternary": "off",
+      "arrow-parens": "off",
+      "comma-dangle": "off",
+      "function-paren-newline": "off",
+      "import/no-extraneous-dependencies": "off",
+      "import/prefer-default-export": "off",
+      "max-len": [
+        1,
+        120
+      ],
+      "no-param-reassign": "off",
+      "no-unused-vars": [
+        2,
+        {
+          "args": "none"
+        }
+      ],
+      "no-use-before-define": "off",
+      "react/destructuring-assignment": "off",
+      "react/require-default-props": "off",
+      "react/jsx-filename-extension": "off",
+      "class-methods-use-this": "off",
+      "no-multiple-empty-lines": "off"
+    }
+  }
+}
