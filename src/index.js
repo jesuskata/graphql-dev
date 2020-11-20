@@ -2,12 +2,57 @@
 import { GraphQLServer } from 'graphql-yoga';
 // Scalar types = String, Boolean, Int, Float, Id
 // Type Definitions (schema)
+
+// Demo Users Data
+const users = [
+  {
+    id: '1',
+    name: 'Jesus',
+    email: 'jesus@example.com',
+    age: 35
+  },
+  {
+    id: '2',
+    name: 'Elo',
+    email: 'elo@example.com',
+    age: 29
+  },
+  {
+    id: '3',
+    name: 'Aleisa',
+    email: 'aleisa@example.com',
+    age: 6
+  }
+];
+
+// Demo Posts Data
+const posts = [
+  {
+    id: '10',
+    title: 'First post',
+    body: 'This is the first post',
+    published: true
+  },
+  {
+    id: '11',
+    title: 'Second post',
+    body: 'This is the second post',
+    published: false
+  },
+  {
+    id: '12',
+    title: 'Third post',
+    body: 'This is the third post',
+    published: true
+  },
+];
+
 const typeDefs = `
   type Query {
+    users(query: String): [User!]!
+    posts(query: String): [Post!]!
     me: User!
     post: Post!
-    add(numbers: [Int!]!): Int!
-    grades: [Int!]!
   }
 
   type User {
@@ -28,6 +73,22 @@ const typeDefs = `
 // Resolvers
 const resolvers = {
   Query: {
+    users(parents, args, cts, info) {
+      if (!args.query) {
+        return users;
+      }
+      return users.filter((user) => user.name.toLowerCase().includes(args.query.toLowerCase()));
+    },
+    posts(parents, args, cts, info) {
+      if (!args.query) {
+        return posts;
+      }
+      return posts.filter((post) => {
+        const isTitleMatch = post.title.toLowerCase().includes(args.query.toLowerCase());
+        const isBodyMatch = post.body.toLowerCase().includes(args.query.toLowerCase());
+        return isTitleMatch || isBodyMatch;
+      });
+    },
     me() {
       return {
         id: '123-idname',
@@ -43,17 +104,6 @@ const resolvers = {
         body: 'This is a hello world graphql example',
         published: true
       };
-    },
-    // eslint-disable-next-line consistent-return
-    add(parent, args, ctx, info) {
-      if (args.numbers === 0) {
-        return 0;
-      }
-      // [1, 5, 10, 2]
-      return args.numbers.reduce((accumulator, currentValue) => accumulator + currentValue);
-    },
-    grades(parent, args, ctx, info) {
-      return [12, 67, 45];
     }
   }
 };
@@ -64,5 +114,5 @@ const server = new GraphQLServer({
 });
 
 server.start(() => {
-  console.log('The server is run!');
+  console.log('The server is run!'); // eslint-disable-line
 });
