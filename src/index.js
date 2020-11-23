@@ -50,12 +50,33 @@ const posts = [
   },
 ];
 
+// Demo Comments Data
+const comments = [
+  {
+    id: '1',
+    text: 'Hello world!'
+  },
+  {
+    id: '2',
+    text: 'Comment example!'
+  },
+  {
+    id: '3',
+    text: 'Hi Mike!'
+  },
+  {
+    id: '4',
+    text: 'Are you working?'
+  },
+];
+
 const typeDefs = `
   type Query {
     users(query: String): [User!]!
     posts(query: String): [Post!]!
     me: User!
     post: Post!
+    comment: [Comment!]!
   }
 
   type User {
@@ -72,6 +93,11 @@ const typeDefs = `
     body: String!
     published: Boolean!
     author: User!
+  }
+
+  type Comment {
+    id: ID!
+    text: String!
   }
 `;
 
@@ -109,6 +135,9 @@ const resolvers = {
         body: 'This is a hello world graphql example',
         published: true
       };
+    },
+    comment(parent, args, ctx, info) {
+      return comments;
     }
   },
   Post: {
