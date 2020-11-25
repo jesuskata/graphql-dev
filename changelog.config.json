@@ -24,7 +24,9 @@
     "lerna"
   ],
   "scopes": [
-    ""
+    "other",
+    "query",
+    "mutation"
   ],
   "types": {
     "chore": {
