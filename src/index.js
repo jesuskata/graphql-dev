@@ -92,7 +92,9 @@ const typeDefs = `
     createUser(data: CreateUserInput): User!
     deleteUser(id: ID!): User!
     createPost(data: CreatePostInput): Post!
+    deletePost(id: ID!): Post!
     createComment(data: CreateCommentInput): Comment!
+    deleteComment(id: ID!): Comment!
   }
 
   input CreateUserInput {
@@ -199,6 +201,7 @@ const resolvers = {
       if (userIndex === -1) {
         throw new Error('User not found');
       }
+      // Delete the user found
       const deletedUsers = users.splice(userIndex, 1);
 
       // Delete the posts from the user deleted
@@ -212,6 +215,8 @@ const resolvers = {
 
       // Delete the comments from the user deleted
       comments = comments.filter((comment) => comment.author !== args.id);
+
+      // Return the value deleted
       return deletedUsers[0];
     },
     createPost(parent, args, ctx, info) {
@@ -228,6 +233,21 @@ const resolvers = {
       posts.push(post);
       return post;
     },
+    deletePost(parent, args, ctx, info) {
+      const postIndex = posts.findIndex((post) => post.id === args.id);
+      if (postIndex === -1) {
+        throw new Error('Post not found');
+      }
+
+      // Delete the post found
+      const deletedPost = posts.splice(postIndex, 1);
+
+      // Extract the comments that not match the comment deleted
+      comments = comments.filter((comment) => comment.post !== args.id);
+
+      // Return the post deleted
+      return deletedPost[0];
+    },
     createComment(parent, args, ctx, info) {
       const userExists = users.some((user) => user.id === args.data.author);
       const postExists = posts.some((post) => post.id === args.data.post && post.published);
@@ -243,6 +263,15 @@ const resolvers = {
 
       comments.push(comment);
       return comment;
+    },
+    deleteComment(parent, args, ctx, info) {
+      const commentIndex = comments.findIndex((comment) => comment.id === args.id);
+      if (commentIndex === -1) {
+        throw new Error('Comment not found');
+      }
+      // Delete the comment found
+      const deletedComment = comments.splice(commentIndex, 1);
+      return deletedComment[0];
     }
   },
   Post: {
