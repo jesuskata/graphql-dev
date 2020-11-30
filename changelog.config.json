@@ -26,7 +26,8 @@
   "scopes": [
     "other",
     "query",
-    "mutation"
+    "mutation",
+    "subscription"
   ],
   "types": {
     "chore": {
